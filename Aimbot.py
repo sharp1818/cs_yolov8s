@@ -26,7 +26,7 @@ def init_arduino():
         print("No se detectaron puertos de Arduino. Verifica la conexión.")
         return(arduino)
 
-def aim(bbox):
+def aim(bbox, arduino):
     centerX = int((bbox[2] + bbox[0]) / 2)
     centerX = int((bbox[2] + bbox[0]) / 2)
     centerY = int((bbox[3] + bbox[1]) / 2 - (bbox[3] - bbox[1]) / 2 * DETECTION_Y_PORCENT)
