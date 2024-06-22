@@ -39,23 +39,35 @@ def install_python():
             print("Python installation is not supported on this platform.")
             
 
-if __name__ == "__main__":
-    # Instalar Git fuera del entorno virtual
-    install_git()
-    
-    # Instalar Python si no está instalado
-    install_python()
-    
+def activate_venv():
     # Crear y activar un entorno virtual
     subprocess.run(['python', '-m', 'venv', 'myenv'], check=True)
     activate_path = os.path.join('myenv', 'Scripts', 'activate')
     subprocess.run([activate_path], shell=True)
-    
+
+def install_requirements():
+    try:
+        subprocess.run(['pip', 'install', '-r', 'requirements.txt'], check=True)
+        print("Dependencias instaladas.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error instalando dependencias: {e}")
+        raise
+
+def deactivate_venv():
+    deactivate_path = os.path.join('myenv', 'Scripts', 'deactivate')
+    subprocess.run([deactivate_path], shell=True)
+            
+if __name__ == "__main__":
+    # Instalar Git fuera del entorno virtual
+    install_git()    
+    # Instalar Python si no está instalado
+    install_python()
+
     try:
         # Instalar las dependencias desde el archivo requirements.txt
-        print("Installing dependencies...")
-        subprocess.run(['pip', 'install', '-r', 'requirements.txt'], check=True)
-        print("Dependencies installed successfully.")
+        activate_venv()
+        install_requirements()
+        deactivate_venv()
     finally:
         deactivate_path = os.path.join('myenv', 'Scripts', 'deactivate')
         subprocess.run([deactivate_path], shell=True)
